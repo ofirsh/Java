@@ -13,10 +13,12 @@ import processing.core.PApplet;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.data.PointFeature;
+import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+// import de.fhpotsdam.unfolding.utils.MapUtils.Location;
 
 //Parsing library
 import parsing.ParseFeed;
@@ -81,7 +83,28 @@ public class EarthquakeCityMap extends PApplet {
 	    	Object magObj = f.getProperty("magnitude");
 	    	float mag = Float.parseFloat(magObj.toString());
 	    	// PointFeatures also have a getLocation method
+	    	
+	    	// OFIR	    	
+	    	SimplePointMarker marker = new SimplePointMarker(f.getLocation());
+	    	
+	    	if( mag >= 5 )
+	    	{
+	    		marker.setColor(color(255,0,0));
+	    	}
+	    	else if (mag >= 4 & mag < 5)
+	    	{
+	    		marker.setColor(color(255,255,0));
+	    	}
+	    	else
+	    	{
+	    		marker.setColor(color(0,0,255));
+	    	}
+	    		    	    	
+	    	markers.add(marker);
+
 	    }
+	    
+    	map.addMarkers(markers);
 	    
 	    // Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
@@ -95,8 +118,15 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Implement this method and call it from setUp, if it helps
 	private SimplePointMarker createMarker(PointFeature feature)
 	{
+		Location loc = feature.getLocation();
+		
+		SimplePointMarker marker = new SimplePointMarker(feature.getLocation());
+		
+		
+		
+		
 		// finish implementing and use this method, if it helps.
-		return new SimplePointMarker(feature.getLocation());
+		return marker;
 	}
 	
 	public void draw() {
